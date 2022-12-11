@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import SubmitButton from './button';
-import { useRef } from 'react';
-
+import React, { useRef } from 'react';
+import {v4 as uuidv4} from 'uuid';
+import {User} from '../data/dummy'
+import axios from 'axios';
 const Form = styled.form`
   width: 100%;
   
@@ -32,21 +34,39 @@ const UserInput = styled.input`
 `;
 
 const InputURL = () =>{
-  const userInputRef = useRef();
-  const urlInputRef = useRef();
+  const userInputRef = useRef<HTMLInputElement>(null);
+  const urlInputRef = useRef<HTMLInputElement>(null);
 
-  const submitHandler = (e) =>{
+  const submitHandler = (e:React.FormEvent) =>{
     e.preventDefault();
-    const userName = userInputRef.current.value;
-    const url = urlInputRef.current.value;
     
-    console.log(userName,url)
+    const userName:string = userInputRef.current!.value;
+    const url:string = urlInputRef.current!.value;
+
+    if(userName !== '' && url !== ''){ //인풋이 비어있지않을때 먼저 uuid로 데이터베이스에서 검색하는기능도 추가해야함
+      const user = new User()
+      user.id = uuidv4();
+      user.name = userName;
+      user.url!.push(url);
+      console.log(user)
+
+      axios.post('http://localhost:3005/post',user)
+        .then((res)=>console.log)
+        .catch((err)=>console.log)
+
+
+      
+    }
+    
+    
+
+    
   }
   return (
     <Form onSubmit={submitHandler}>
       <URLWrapper>
-        <UserInput type='text' ref={userInputRef} />
-        <URLInput type='text' ref={urlInputRef}/>
+        <UserInput type='text' ref={userInputRef} required/>
+        <URLInput type='text' ref={urlInputRef} required/>
         <SubmitButton>등록</SubmitButton>
       </URLWrapper>
     </Form>

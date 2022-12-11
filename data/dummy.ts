@@ -1,5 +1,5 @@
-export interface User {
-  id: number;
-  name: string;
-  url: string;
+export class User {
+  id?:string;
+  name?: string;
+  url: string[] = [];
 }
