@@ -1,0 +1,12 @@
+.contents {
+  
+  display: flex;
+  border: 1px red solid;
+  width: 100vw;
+  height: 50vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+
+}
